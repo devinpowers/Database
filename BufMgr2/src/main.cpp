@@ -13,15 +13,20 @@
 #include "exceptions/page_pinned_exception.h"
 #include "exceptions/buffer_exceeded_exception.h"
 
+
+/*
 #define PRINT_ERROR(str) \
 { \
 	std::cerr << "On Line No:" << __LINE__ << "\n"; \
 	std::cerr << str << "\n"; \
 	exit(1); \
 }
+*/
+
 
 using namespace badgerdb;
 
+/*
 const PageId num = 100;
 PageId pid[num], pageno1, pageno2, pageno3, i;
 RecordId rid[num], rid2, rid3;
@@ -30,18 +35,25 @@ char tmpbuf[100];
 BufMgr* bufMgr;
 File *file1ptr, *file2ptr, *file3ptr, *file4ptr, *file5ptr;
 
+*/
+
+/*
 void test1();
 void test2();
 void test3();
 void test4();
 void test5();
 void test6();
-void testBufMgr();
+
+*/
+
+// void testBufMgr();
 
 int main() 
 {
 	//Following code shows how to you File and Page classes
 
+	std::cout << "OK TESTING NOW !!!!!  " << std::endl;
   const std::string& filename = "test.db";
   std::cout << "Creating a Database " << std::endl;
   // Clean up from any previous runs that crashed.
@@ -49,59 +61,75 @@ int main()
 	{
     File::remove(filename);
   }
-	catch(FileNotFoundException)
-	{
-  }
+	catch(FileNotFoundException){}
 
-  {
+  {	
     // Create a new database file.
     File new_file = File::create(filename);
-    
+	std::cout << "Created A new File " << std::endl;
+
     // Allocate some pages and put data on them.
     PageId third_page_number;
+	PageId fourth_page_number; // Testing here
+	// Loop through and create new page()
     for (int i = 0; i < 5; ++i) {
       Page new_page = new_file.allocatePage();
       if (i == 3) {
-        // Keep track of the identifier for the third page so we can read it
-        // later.
+        // Keep track of the identifier for the third page so we can read it later!
         third_page_number = new_page.page_number();
       }
+	  if (i == 4){
+		  // Keep Track of the identifier for the fourth page so we can read it later!!
+		  fourth_page_number = new_page.page_number();			// Testing
+	  }
+	  // Insert "Record into each page"
       new_page.insertRecord("hello!");
       // Write the page back to the file (with the new data).
       new_file.writePage(new_page);
     }
 
     // Iterate through all pages in the file.
-    for (FileIterator iter = new_file.begin();
-         iter != new_file.end();
-         ++iter) {
+    for (FileIterator iter = new_file.begin(); iter != new_file.end(); ++iter) {
       // Iterate through all records on the page.
-      for (PageIterator page_iter = (*iter).begin();
-           page_iter != (*iter).end();
-           ++page_iter) {
-        std::cout << "Found record: " << *page_iter
-            << " on page " << (*iter).page_number() << "\n";
+      for (PageIterator page_iter = (*iter).begin(); page_iter != (*iter).end(); ++page_iter) {
+        std::cout << "Found record: " << *page_iter << " on page " << (*iter).page_number() << "\n";
       }
     }
 
     // Retrieve the third page and add another record to it.
     Page third_page = new_file.readPage(third_page_number);
+
     const RecordId& rid = third_page.insertRecord("world!");
     new_file.writePage(third_page);
 
+	std::cout << std::endl;
     // Retrieve the record we just added to the third page.
-    std::cout << "Third page has a new record: "
-        << third_page.getRecord(rid) << "\n\n";
-  }
+    std::cout << "Third page has a new record: "  << third_page.getRecord(rid) << "\n\n";
+
+	// REtrive the 4th page and add another rtecord to it
+
+	Page fourth_page = new_file.readPage(fourth_page_number);
+	const RecordId& rid2 = fourth_page.insertRecord("Here is the 4th page!!!");
+	new_file.writePage(fourth_page);
+
+	// Retrieve 4th page
+	
+	std::cout << "Fourth page has a new record: "  << fourth_page.getRecord(rid2) << "\n\n";
+
+  	}
+
+	std::cout << "Were out of scope now!!!!! " << std::endl;
+
+	for (int u = 0; u <100; u++ ){
+		std::cout << u << std::endl;
+	}
   // new_file goes out of scope here, so file is automatically closed.
 
   // Delete the file since we're done with it.
-  File::remove(filename);
+   File::remove(filename);
 
 	//This function tests buffer manager, comment this line if you don't wish to test buffer manager
 	//testBufMgr();
-
-	std::cout << "Hello World I am Here!!!" << std::endl;
 }
 
 /*

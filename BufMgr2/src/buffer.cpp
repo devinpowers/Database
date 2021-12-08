@@ -11,8 +11,7 @@
 
 namespace badgerdb { 
 
-BufMgr::BufMgr(std::uint32_t bufs)
-	: numBufs(bufs) {
+BufMgr::BufMgr(std::uint32_t bufs) : numBufs(bufs) {
 	bufDescTable = new BufDesc[bufs];
 
   for (FrameId i = 0; i < bufs; i++) 
@@ -34,17 +33,21 @@ BufMgr::~BufMgr() {
 }
 
 void BufMgr::advanceClock()
-{
-
+{	
+	// advance clock to the next frame in the buffer pool
+	clockHand = (clockHand +1 ) % numBufs;
 }
 
 void BufMgr::allocBuf(FrameId & frame) 
 {
+	
 }
 
 	
 void BufMgr::readPage(File* file, const PageId pageNo, Page*& page)
-{
+{	// Reads Page! 
+
+
 }
 
 

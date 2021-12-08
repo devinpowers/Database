@@ -6,8 +6,7 @@
 
 namespace badgerdb {
 
-
-class BufMgr;
+class BufMgr; // Declaring it since we use it
 
 class BufDesc {
 
@@ -15,20 +14,13 @@ class BufDesc {
 
  private:
 
-  File* file;
-
-  PageId pageNo;
-
-  FrameId	frameNo;
-
-  int pinCnt;
-
-  bool dirty;
-
-
-  bool valid;
-
-  bool refbit;
+    File* file;
+    PageId pageNo;
+    FrameId	frameNo;
+    int pinCnt;
+    bool dirty;
+    bool valid;
+    bool refbit;
 
 
   void Clear()
@@ -76,81 +68,59 @@ class BufDesc {
 
 struct BufStats
 {
+    int accesses;
+    int diskreads;
+    int diskwrites;
 
-  int accesses;
-
-  int diskreads;
-
-  int diskwrites;
-
-  void clear()
-  {
-		accesses = diskreads = diskwrites = 0;
-  }
-      
-  BufStats()
-  {
-		clear();
-  }
+    void clear()
+    { // Clear everything
+      accesses = diskreads = diskwrites = 0;
+    }
+        
+    BufStats()
+    {
+      clear();
+    }
 };
 
 
 class BufMgr 
 {
- private:
+  private:
 
-  FrameId clockHand;
+      FrameId clockHand;
+      std::uint32_t numBufs;
+      BufHashTbl *hashTable;
+      BufDesc *bufDescTable;
+      BufStats bufStats;
 
-  std::uint32_t numBufs;
-	
-  BufHashTbl *hashTable;
+      void advanceClock();
 
-  BufDesc *bufDescTable;
+      void allocBuf(FrameId & frame);
 
-  BufStats bufStats;
+  public:
 
-  void advanceClock();
+      Page* bufPool;
+      BufMgr(std::uint32_t bufs);
+    
+      ~BufMgr(); 
 
-  void allocBuf(FrameId & frame);
+      void readPage(File* file, const PageId PageNo, Page*& page);
+      void unPinPage(File* file, const PageId PageNo, const bool dirty);
+      void allocPage(File* file, PageId &PageNo, Page*& page); 
+      void flushFile(const File* file);
+      void disposePage(File* file, const PageId PageNo);
+      void  printSelf();
 
- public:
+      BufStats & getBufStats()
+      {
+        return bufStats;
+      }
 
-  Page* bufPool;
-
-  BufMgr(std::uint32_t bufs);
-	
-
-  ~BufMgr();
-
-
-  void readPage(File* file, const PageId PageNo, Page*& page);
-
-
-  void unPinPage(File* file, const PageId PageNo, const bool dirty);
-
-
-  void allocPage(File* file, PageId &PageNo, Page*& page); 
-
-
-  void flushFile(const File* file);
-
-
-  void disposePage(File* file, const PageId PageNo);
-
-
-  void  printSelf();
-
-
-  BufStats & getBufStats()
-  {
-		return bufStats;
-  }
-
-
-  void clearBufStats() 
-  {
-		bufStats.clear();
-  }
+      void clearBufStats() 
+      {
+        bufStats.clear();
+      }
 };
 
 }
