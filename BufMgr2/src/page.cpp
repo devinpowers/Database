@@ -1,5 +1,3 @@
-
-
 #include <cassert>
 
 #include "exceptions/insufficient_space_exception.h"
@@ -12,6 +10,7 @@
 namespace badgerdb {
 
 Page::Page() {
+  // Call initialize!
   initialize();
 }
 

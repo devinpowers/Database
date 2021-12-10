@@ -54,6 +54,8 @@ int main()
 	//Following code shows how to you File and Page classes
 
 	std::cout << "OK TESTING NOW !!!!!  " << std::endl;
+
+  std::cout << "------------------------------ " << std::endl;
   const std::string& filename = "test.db";
   std::cout << "Creating a Database " << std::endl;
   // Clean up from any previous runs that crashed.
@@ -130,6 +132,11 @@ int main()
 
 	//This function tests buffer manager, comment this line if you don't wish to test buffer manager
 	//testBufMgr();
+
+		std::cout << "Were out of the SCope of teh FRame ! " << std::endl;
+
+		std::cout << "ADDING TESTING THIS FOR THE SAKE OF PRACTICE!" << std::endl;   
+
 }
 
 /*

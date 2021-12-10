@@ -136,9 +136,7 @@ class Page {
   friend class BufferTest;
 };
 
-static_assert(Page::SIZE > sizeof(PageHeader),
-              "Page size must be large enough to hold header and data.");
-static_assert(Page::DATA_SIZE > 0,
-              "Page must have some space to hold data.");
+static_assert(Page::SIZE > sizeof(PageHeader),  "Page size must be large enough to hold header and data.");
+static_assert(Page::DATA_SIZE > 0, "Page must have some space to hold data.");
 
 }

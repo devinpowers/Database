@@ -95,7 +95,6 @@ class BufMgr
       BufStats bufStats;
 
       void advanceClock();
-
       void allocBuf(FrameId & frame);
 
   public:
@@ -112,14 +111,14 @@ class BufMgr
       void disposePage(File* file, const PageId PageNo);
       void  printSelf();
 
-      BufStats & getBufStats()
+      BufStats &getBufStats()
       {
         return bufStats;
       }
 
       void clearBufStats() 
       {
-        bufStats.clear();
+        bufStats.clear();  // Clear the Stats
       }
 };
 

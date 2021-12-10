@@ -12,20 +12,27 @@
 namespace badgerdb { 
 
 BufMgr::BufMgr(std::uint32_t bufs) : numBufs(bufs) {
-	bufDescTable = new BufDesc[bufs];
+
+	// Constructor for the Buffer Manager!!
+	// Setting up the Buffer Manager for us to use!!!
+
+	bufDescTable = new BufDesc[bufs]; // Creates a Buffer Desription Table the size of our buffer!
 
   for (FrameId i = 0; i < bufs; i++) 
   {
-  	bufDescTable[i].frameNo = i;
+  	bufDescTable[i].frameNo = i;       // For each element in the array set a frame number and the frame to false
   	bufDescTable[i].valid = false;
   }
 
   bufPool = new Page[bufs];
 
-	int htsize = ((((int) (bufs * 1.2))*2)/2)+1;
+  int htsize = ((((int) (bufs * 1.2))*2)/2)+1;   // Hash Function?? 
+
+
   hashTable = new BufHashTbl (htsize);  // allocate the buffer hash table
 
-  clockHand = bufs - 1;
+  clockHand = bufs - 1;   // Set the Clock Hand to the size of our Buffer
+
 }
 
 
