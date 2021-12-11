@@ -17,8 +17,7 @@ int BufHashTbl::hash(const File* file, const PageId pageNo)
   return value;
 }
 
-BufHashTbl::BufHashTbl(int htSize)
-	: HTSIZE(htSize)
+BufHashTbl::BufHashTbl(int htSize) : HTSIZE(htSize)
 {
   // allocate an array of pointers to hashBuckets
   ht = new hashBucket* [htSize];

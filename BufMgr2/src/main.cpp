@@ -122,9 +122,7 @@ int main()
 
 	std::cout << "Were out of scope now!!!!! " << std::endl;
 
-	for (int u = 0; u <100; u++ ){
-		std::cout << u << std::endl;
-	}
+
   // new_file goes out of scope here, so file is automatically closed.
 
   // Delete the file since we're done with it.

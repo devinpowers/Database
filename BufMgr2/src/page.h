@@ -47,16 +47,16 @@ class PageIterator;
 
 
 class Page {
- public:
+  public:
 
-  static const std::size_t SIZE = 8192;
+      static const std::size_t SIZE = 8192;
 
-  static const std::size_t DATA_SIZE = SIZE - sizeof(PageHeader);
+      static const std::size_t DATA_SIZE = SIZE - sizeof(PageHeader);
 
-  static const PageId INVALID_NUMBER = 0;
+      static const PageId INVALID_NUMBER = 0;
 
 
-  static const SlotId INVALID_SLOT = 0;
+      static const SlotId INVALID_SLOT = 0;
 
 
   Page();

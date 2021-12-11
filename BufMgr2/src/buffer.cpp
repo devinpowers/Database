@@ -43,6 +43,7 @@ void BufMgr::advanceClock()
 {	
 	// advance clock to the next frame in the buffer pool
 	clockHand = (clockHand +1 ) % numBufs;
+	
 }
 
 void BufMgr::allocBuf(FrameId & frame) 
@@ -53,6 +54,25 @@ void BufMgr::allocBuf(FrameId & frame)
 	
 void BufMgr::readPage(File* file, const PageId pageNo, Page*& page)
 {	// Reads Page! 
+
+	try{
+		// Case 1: Page is in the Buffer Pool
+		FrameId frame;
+		hashTable-> lookup(file, pageNo, frame);
+		// Set the Appropriate refbit
+		bufDescTable[frame].refbit = true;
+		bufDescTable[frame].pinCnt++;
+		bufStats.accesses++;
+		// Return a pointer to the frame containing the page
+		page = &bufPool[frame];
+	}
+	catch(HashNotFoundException e){
+		// Case 2: Page is NOT in the Buffer pool
+
+		FrameId frame;
+		allocBuf(frame);
+		//
+	}
 
 
 }
