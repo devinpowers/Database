@@ -15,21 +15,24 @@ BufMgr::BufMgr(std::uint32_t bufs) : numBufs(bufs) {
 
 	// Constructor for the Buffer Manager!!
 	// Setting up the Buffer Manager for us to use!!!
+	// Allocates an array for the Buffer Pool and a Corresponding BufDesc Table
+	// All Frames will be set up in a clear state
+	// The hash table will also start out in an empty state
 
+	 bufPool = new Page[bufs];	// Create Buffer Pool!
 	bufDescTable = new BufDesc[bufs]; // Creates a Buffer Desription Table the size of our buffer!
 
   for (FrameId i = 0; i < bufs; i++) 
-  {
-  	bufDescTable[i].frameNo = i;       // For each element in the array set a frame number and the frame to false
+  { // Set all the Frame Numbers in the Buffer and their current state of being valid to false
+  	bufDescTable[i].frameNo = i;       
   	bufDescTable[i].valid = false;
   }
 
-  bufPool = new Page[bufs];
 
+  // Hash Table
   int htsize = ((((int) (bufs * 1.2))*2)/2)+1;   // Hash Function?? 
 
-
-  hashTable = new BufHashTbl (htsize);  // allocate the buffer hash table
+  hashTable = new BufHashTbl(htsize);  // allocate the buffer hash table
 
   clockHand = bufs - 1;   // Set the Clock Hand to the size of our Buffer
 
@@ -37,6 +40,30 @@ BufMgr::BufMgr(std::uint32_t bufs) : numBufs(bufs) {
 
 
 BufMgr::~BufMgr() {
+	// Flushes out all dirty pages and deallocates the buffer pool and the BufDesc table.
+
+	for(int i = 0; i < (int)numBufs; i++ ){
+
+		if(bufDescTable[i].dirty == true){
+			// Must write page and other information to disk
+			File* thisFile = bufDescTable[i].file;
+			PageId thisPageNo = bufDescTable[i].pageNo;
+			Page thisPage = bufPool[thisPageNo];
+
+			bufStats.accesses++;
+			thisFile ->writePage(thisPage);
+			bufStats.diskwrites++;
+			bufDescTable[i].dirty = false;
+			hashTable -> remove(thisFile, thisPageNo);
+			bufDescTable[i].Clear(); // Clear array at index
+		}
+	}
+
+	// Deallocate our Memory
+	delete [] bufPool;
+	delete [] bufDescTable;
+	delete hashTable;
+
 }
 
 void BufMgr::advanceClock()
@@ -48,6 +75,63 @@ void BufMgr::advanceClock()
 
 void BufMgr::allocBuf(FrameId & frame) 
 {
+	int count = 0;
+	bool allocated = false;
+
+	// We have to find a empty spot in our Buffer Pool, we must traverse
+
+	while(count <(int)numBufs*2){
+
+		if(bufDescTable[clockHand].valid == true){
+			// Valid page to go down
+
+			if (bufDescTable[clockHand].refbit == false ){
+
+				if (bufDescTable[clockHand].pinCnt == 0){
+					//
+					if (bufDescTable[clockhand].dirty == false){
+						//
+						allocated = true;
+						frame = clockhand;
+						break;
+					}
+					else{
+
+						// FLSUH PAGE TO DISK
+						bufDescTable[clockHand].file->writePage(bufPool[clockHand]);
+						bufStats.accesses++;
+						hashTable->remove(bufDescTable[clockHand].file, bufDescTable[clockHand].pageNo);
+						bufDescTable[clockHand].Clear();
+						allocated = true;
+						frame = clockHand;
+						bufStats.diskwrites++;
+                 		break;
+					}
+				}
+				else{
+					// Adnace
+					advanceClock();
+					count++;
+				}
+			}
+			else{
+				//refbit
+				bufDescTable[clockHand].refbit = false;
+				advanceClock(); // next
+				count++;
+			}
+		}
+		else{
+			// Not valid Set
+			allocated = true;
+			frame = clockHand;
+			break;
+		}
+	}
+	if (allocated == false){
+		// All Buffer frames are pinned throw BufferExceededException
+		throw BufferExceededException();
+	}
 	
 }
 

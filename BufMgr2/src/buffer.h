@@ -80,6 +80,12 @@ struct BufStats
         
     BufStats()
     {
+      // Intinalize
+      // Print??? 
+      std::cout << "Number of Accesses: " accesses << std::endl;
+      std::cout << "Number of Diskreaads: " diskreads << std::endl;
+      std::cout << "Number of Diskwrites: " diskwrites << std::endl;
+
       clear();
     }
 };
@@ -91,12 +97,12 @@ class BufMgr
 
       FrameId clockHand;
       std::uint32_t numBufs;
-      BufHashTbl *hashTable;
-      BufDesc *bufDescTable;
-      BufStats bufStats;
+      BufHashTbl *hashTable;    // Hash Table mapping (File, Page) to Frame Number
+      BufDesc *bufDescTable;    // Keep track of the state of each frame in the Buffer Pool
+      BufStats bufStats;      // Statistics about the Buffer Pool usage
 
-      void advanceClock();
-      void allocBuf(FrameId & frame);
+      void advanceClock(); // Allocate a free frame using the clock algorithm
+      void allocBuf(FrameId & frame); // Advance clock to the next frame in the buffer pool
 
   public:
 

@@ -22,11 +22,15 @@ BufHashTbl::BufHashTbl(int htSize) : HTSIZE(htSize)
   // allocate an array of pointers to hashBuckets
   ht = new hashBucket* [htSize];
   for(int i=0; i < HTSIZE; i++)
+  {
     ht[i] = NULL;
+  }
+    
 }
 
 BufHashTbl::~BufHashTbl()
 {
+  // Deconstructor
   for(int i = 0; i < HTSIZE; i++) {
     hashBucket* tmpBuf = ht[i];
     while (ht[i]) {

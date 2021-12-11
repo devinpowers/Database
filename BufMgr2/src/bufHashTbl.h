@@ -37,9 +37,3 @@ class BufHashTbl
 
 }
 
-
-/*
-    BUffer
-
-
-*/
