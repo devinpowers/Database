@@ -19,8 +19,8 @@ class BufDesc {
     PageId pageNo;
     FrameId	frameNo;
     int pinCnt;
-    bool dirty;
-    bool valid;
+    bool dirty;   // Is the Page Dirty
+    bool valid;   // An Actual Pa
     bool refbit;
 
 
@@ -28,7 +28,7 @@ class BufDesc {
 	{
     pinCnt = 0;
 		file = NULL;
-		pageNo = Page::INVALID_NUMBER;
+		pageNo = Page::INVALID_NUMBER;  // Clear this Class 
     dirty = false;
     refbit = false;
 		valid = false;
