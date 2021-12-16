@@ -11,17 +11,19 @@ class BufMgr; // Declaring it since we use it
 
 class BufDesc {
 
-	friend class BufMgr;
+	friend class BufMgr;  // Declaring Function!!!
 
  private:
 
-    File* file;
-    PageId pageNo;
-    FrameId	frameNo;
-    int pinCnt;
-    bool dirty;   // Is the Page Dirty
-    bool valid;   // An Actual Pa
-    bool refbit;
+
+
+      File* file;
+      PageId pageNo;
+      FrameId	frameNo;
+      int pinCnt;
+      bool dirty;   // Is the Page Dirty
+      bool valid;   // An Actual Pa
+      bool refbit;
 
 
   void Clear()
@@ -36,7 +38,7 @@ class BufDesc {
 
   void Set(File* filePtr, PageId pageNum)
 	{ 
-		file = filePtr;
+		file = filePtr; // Set filePtr to File in DB!
     pageNo = pageNum;
     pinCnt = 1;
     dirty = false;
@@ -52,7 +54,10 @@ class BufDesc {
 			std::cout << "pageNo:" << pageNo << " ";
 		}
 		else
-			std::cout << "file:NULL ";
+    {
+      std::cout << "file:NULL ";
+    }
+			
 
 		std::cout << "valid:" << valid << " ";
 		std::cout << "pinCnt:" << pinCnt << " ";
@@ -62,6 +67,7 @@ class BufDesc {
 
   BufDesc()
 	{
+    // Clear the Description of the Buffer Manager!
   	Clear();
   }
 };

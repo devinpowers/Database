@@ -67,24 +67,19 @@ BufMgr::~BufMgr() {
 }
 
 void BufMgr::advanceClock()
-{	
-	// advance clock to the next frame in the buffer pool
-	clockHand = (clockHand +1 ) % numBufs;
-	
+{	// advance clock to the next frame in the buffer pool
+	clockHand = (clockHand +1 ) % numBufs;	
 }
 
 void BufMgr::allocBuf(FrameId & frame) 
 {
 	int count = 0;
 	bool allocated = false;
-
 	// We have to find a empty spot in our Buffer Pool, we must traverse
-
 	while(count <(int)numBufs*2){
 
 		if(bufDescTable[clockHand].valid == true){
 			// Valid page to go down
-
 			if (bufDescTable[clockHand].refbit == false ){
 
 				if (bufDescTable[clockHand].pinCnt == 0){
@@ -131,8 +126,7 @@ void BufMgr::allocBuf(FrameId & frame)
 	if (allocated == false){
 		// All Buffer frames are pinned throw BufferExceededException
 		throw BufferExceededException();
-	}
-	
+	}	
 }
 
 	
