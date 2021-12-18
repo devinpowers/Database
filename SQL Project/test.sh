@@ -1,5 +1,5 @@
 echo "Start======================================================="
-sh testParser.sh
+sh runParser.sh
 sqlite3 AuctionDataBase.db < create.sql
 sqlite3 AuctionDataBase.db < load.txt
 echo "Testing queries============================================="

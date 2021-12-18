@@ -1,7 +1,7 @@
 .separator |
-.import Users.dat Users
-update Users set Location = null where Location = "NULL";
-update Users set Country = null where Country = "NULL";
+.import EbayUsers.dat EbayUsers
+update EbayUsers set Location = null where Location = "NULL";
+update EbayUsers set Country = null where Country = "NULL";
 
 .import Items.dat Items
 update Items set Buy_Price = null where Buy_Price = "NULL";

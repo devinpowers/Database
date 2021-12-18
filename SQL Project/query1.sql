@@ -1,1 +1,6 @@
-SELECT COUNT(*) FROM users;
+SELECT COUNT(*)
+FROM EbayUsers;
+
+SELECT COUNT(*) FROM EbayUsers;
+
+

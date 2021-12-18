@@ -19,7 +19,7 @@ BufMgr::BufMgr(std::uint32_t bufs) : numBufs(bufs) {
 	// All Frames will be set up in a clear state
 	// The hash table will also start out in an empty state
 
-	 bufPool = new Page[bufs];	// Create Buffer Pool!
+	bufPool = new Page[bufs];	// Create Buffer Pool!
 	bufDescTable = new BufDesc[bufs]; // Creates a Buffer Desription Table the size of our buffer!
 
   for (FrameId i = 0; i < bufs; i++) 
