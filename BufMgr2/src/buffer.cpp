@@ -69,6 +69,7 @@ BufMgr::~BufMgr() {
 void BufMgr::advanceClock()
 {	// advance clock to the next frame in the buffer pool
 	clockHand = (clockHand +1 ) % numBufs;	
+	
 }
 
 void BufMgr::allocBuf(FrameId & frame) 
