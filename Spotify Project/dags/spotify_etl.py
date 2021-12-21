@@ -11,38 +11,14 @@ import sqlite3
 # Generate your token here:  https://developer.spotify.com/console/get-recently-played/
 # Note: You need a Spotify account (can be easily created for free)
 
-def check_if_valid_data(df: pd.DataFrame) -> bool:
-    # Check if dataframe is empty
-    if df.empty:
-        print("No songs downloaded. Finishing execution")
-        return False 
 
-    # Primary Key Check
-    if pd.Series(df['played_at']).is_unique:
-        pass
-    else:
-        raise Exception("Primary Key check is violated")
 
-    # Check for nulls
-    if df.isnull().values.any():
-        raise Exception("Null values found")
-
-    # Check that all timestamps are of yesterday's date
-    yesterday = datetime.datetime.now() - datetime.timedelta(days=1)
-    yesterday = yesterday.replace(hour=0, minute=0, second=0, microsecond=0)
-
-    timestamps = df["timestamp"].tolist()
-    for timestamp in timestamps:
-        if datetime.datetime.strptime(timestamp, '%Y-%m-%d') != yesterday:
-            raise Exception("At least one of the returned songs does not have a yesterday's timestamp")
-
-    return True
 
 
 def run_spotify_etl():
     DATABASE_LOCATION = "sqlite:///my_played_tracks.sqlite"
-    USER_ID = ''
-    TOKEN = ''
+    USER_ID = 'devinpowers'
+    TOKEN = 'BQBYWihYEqh4trG4SsLjCTSPPrZjh41ial5D7zd9nVZF8vehcRtsJduOvR2Pt0Qo-AZ1eKSGAyp8Y9v8pwa25jQcQAMR4mKRrR2UqPVaDKohsVyuH8bzuyx6V3mkUcxIujIZpsU8OMlf9DwrPRlgwxmdcnANbkc5fBL8dEx3ZxmJyDPewjw'
 
       # Extract part of the ETL process
  
@@ -84,33 +60,8 @@ def run_spotify_etl():
 
     song_df = pd.DataFrame(song_dict, columns = ["song_name", "artist_name", "played_at", "timestamp"])
     
-    # Validate
-    if check_if_valid_data(song_df):
-        print("Data valid, proceed to Load stage")
+    print(song_df)
 
-    # Load
+if __name__ == "__main__":
 
-    engine = sqlalchemy.create_engine(DATABASE_LOCATION)
-    conn = sqlite3.connect('my_played_tracks.sqlite')
-    cursor = conn.cursor()
-
-    sql_query = """
-    CREATE TABLE IF NOT EXISTS my_played_tracks(
-        song_name VARCHAR(200),
-        artist_name VARCHAR(200),
-        played_at VARCHAR(200),
-        timestamp VARCHAR(200),
-        CONSTRAINT primary_key_constraint PRIMARY KEY (played_at)
-    )
-    """
-
-    cursor.execute(sql_query)
-    print("Opened database successfully")
-
-    try:
-        song_df.to_sql("my_played_tracks", engine, index=False, if_exists='append')
-    except:
-        print("Data already exists in the database")
-
-    conn.close()
-    print("Close database successfully")
+    run_spotify_etl()

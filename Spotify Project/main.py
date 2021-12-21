@@ -8,12 +8,10 @@ import datetime
 import sqlite3
 
 
-DATABASE_LOCATION = "sqlite:///my_played_tracks.sqlite"
-USER_ID = "" # your Spotify username 
-TOKEN = "" # your Spotify API token
+DATABASE_LOCATION = "sqlite:///my_played_tracks.db"
+USER_ID = "devinpowers" # your Spotify username 
+TOKEN = "BQD5JkqnDzGA3Jm7H0n1MGOKhsyXvym7NeDvsO_ALWUNm2I578pqVzLqwd2YgRNqC0XIlbtT9NO-ZP2dza9dl5lMyQl7-zUsM-9gS_MeD4NBtMby0zhfeu-MC2Z88TNsuB7KFtrLrYocbKGHSOxNLIKVU68ioUBPDwQ9gZ0R_Vt0oXAfeUY" # your Spotify API token
 
-# Generate your token here:  https://developer.spotify.com/console/get-recently-played/
-# Note: You need a Spotify account (can be easily created for free)
 
 def check_if_valid_data(df: pd.DataFrame) -> bool:
     # Check if dataframe is empty
@@ -91,7 +89,7 @@ if __name__ == "__main__":
     # Load
 
     engine = sqlalchemy.create_engine(DATABASE_LOCATION)
-    conn = sqlite3.connect('my_played_tracks.sqlite')
+    conn = sqlite3.connect('my_played_tracks.db')
     cursor = conn.cursor()
 
     sql_query = """
