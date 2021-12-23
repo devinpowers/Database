@@ -137,45 +137,110 @@ void BufMgr::readPage(File* file, const PageId pageNo, Page*& page)
 	try{
 		// Case 1: Page is in the Buffer Pool
 		FrameId frame;
-		hashTable-> lookup(file, pageNo, frame);
+		hashTable-> lookup(file, pageNo, frame); // Use Hashtable to look up and r
 		// Set the Appropriate refbit
-		bufDescTable[frame].refbit = true;
-		bufDescTable[frame].pinCnt++;
-		bufStats.accesses++;
+		bufDescTable[frame].refbit = true; 	// Set as a real page
+		bufDescTable[frame].pinCnt++;		 //  Set this as well!
+		bufStats.accesses++; 				// Set this as Well!
+
+
 		// Return a pointer to the frame containing the page
 		page = &bufPool[frame];
+
 	}
 	catch(HashNotFoundException e){
 		// Case 2: Page is NOT in the Buffer pool
-
+		// So we have to grab it from the DB/Disk and put into the Buffer Pool, But also check to see if there is room !!!
 		FrameId frame;
-		allocBuf(frame);
-		//
-	}
+		allocBuf(frame); // ALlocate a open buffer page for us
+		
+		// Call method to read page from the disk and into the uffer pool
+		Page Target = file-> readPage(pageNo);
+		bufStats.diskreads++;
+		bufPool[frame] = Target; // Set page inside the buffer Pool 
+		// Insert the page into the 
+		hashTable->insert(file, pageNo, frame);
+		// return pointer to frame containg ghe frame
 
+		page = &bufPool[frame];
+
+		bufDescTable[frame].Set(file, pageNo);
+	}
+ 
 
 }
 
 
 void BufMgr::unPinPage(File* file, const PageId pageNo, const bool dirty) 
 {
+	// UnPinPage
+
 }
 
 void BufMgr::flushFile(const File* file) 
 {
+	// Flush the Page
+	// iterate through the buftable and look for the pages belonging to the specfied file
+	for (FrameId i = 0; i < numBufs; i++){
+		
+		if (bufDescTable[i].file == file){
+			PageId pageNo = bufDescTable[i].pageNo;
+			// What about the exception and stuff
+		}
+
+	}
 }
 
 void BufMgr::allocPage(File* file, PageId &pageNo, Page*& page) 
 {
+	// Allocate an empty page in the specified specified file (Remeber Pages are inside files)
+	Page emptyPage = file-> allocatePage();
+	pageNo = emptyPage.page_number();
+
+	FrameId frame;
+
+	// Call allocBuff to allocate a buffer pool Frame!!
+
+	allocBuf(frame);
+	bufPool[frame] = emptyPage;
+	bufStats.accesses++;
+	page = &bufPool[frame];
+
+	hashTable->insert(file, pageNo, frame);
+
+	bufDescTable[frame].Set(file, pageNo); // invoke set() to "set" the table up properly!
+
+
 }
 
 void BufMgr::disposePage(File* file, const PageId PageNo)
 {
-    
+	try{
+
+	
+		// Get Rid of that shit!!
+		FrameId frame;
+		hashTable-> lookup(file, PageNo, frame);
+		// Free the Frame
+		bufDescTable[frame].Clear();
+
+		// Something Something
+		hashTable-> remove(file, PageNo);
+	}
+
+	catch (HashNotFoundException e){
+		// IDK Nothign to return!!
+	}
+
+	// Delete the Page from the File
+	file->deletePage(PageNo);
 }
+
 
 void BufMgr::printSelf(void) 
 {
+
+	// Print the Buffer or something!!!!
   BufDesc* tmpbuf;
 	int validFrames = 0;
   
