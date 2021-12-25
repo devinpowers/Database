@@ -43,7 +43,7 @@ BufMgr::~BufMgr() {
 	// Flushes out all dirty pages and deallocates the buffer pool and the BufDesc table.
 
 	for(int i = 0; i < (int)numBufs; i++ ){
-
+\
 		if(bufDescTable[i].dirty == true){
 			// Must write page and other information to disk
 			File* thisFile = bufDescTable[i].file;
@@ -216,8 +216,6 @@ void BufMgr::allocPage(File* file, PageId &pageNo, Page*& page)
 void BufMgr::disposePage(File* file, const PageId PageNo)
 {
 	try{
-
-	
 		// Get Rid of that shit!!
 		FrameId frame;
 		hashTable-> lookup(file, PageNo, frame);
