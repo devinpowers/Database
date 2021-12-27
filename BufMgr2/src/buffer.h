@@ -11,11 +11,11 @@ class BufMgr; // Declaring it since we use it
 
 class BufDesc {
 
+ public:
+
 	friend class BufMgr;  // Declaring Function!!!
 
- private:
-
-
+ private: 
 
       File* file;
       PageId pageNo;
@@ -81,6 +81,7 @@ struct BufStats
 
     void clear()
     { // Clear everything
+      std::cout << "Clear " << std::endl;
       accesses = diskreads = diskwrites = 0;
     }
         
@@ -88,9 +89,9 @@ struct BufStats
     {
       // Intinalize
       // Print??? 
-      std::cout << "Number of Accesses: " accesses << std::endl;
-      std::cout << "Number of Diskreaads: " diskreads << std::endl;
-      std::cout << "Number of Diskwrites: " diskwrites << std::endl;
+      std::cout << "Number of Accesses: "<< accesses << std::endl;
+      std::cout << "Number of Diskreaads: " << diskreads << std::endl;
+      std::cout << "Number of Diskwrites: " << diskwrites << std::endl;
 
       clear();
     }

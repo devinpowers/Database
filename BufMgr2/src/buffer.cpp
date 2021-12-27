@@ -40,10 +40,12 @@ BufMgr::BufMgr(std::uint32_t bufs) : numBufs(bufs) {
 
 
 BufMgr::~BufMgr() {
+
+
 	// Flushes out all dirty pages and deallocates the buffer pool and the BufDesc table.
 
 	for(int i = 0; i < (int)numBufs; i++ ){
-\
+
 		if(bufDescTable[i].dirty == true){
 			// Must write page and other information to disk
 			File* thisFile = bufDescTable[i].file;
@@ -74,14 +76,18 @@ void BufMgr::advanceClock()
 
 void BufMgr::allocBuf(FrameId & frame) 
 {
+
+	// perform first part of clock algorithm to search for open frame in Buffer Pool
 	int count = 0;
 	bool allocated = false;
+
 	// We have to find a empty spot in our Buffer Pool, we must traverse
 	while(count <(int)numBufs*2){
 
 		if(bufDescTable[clockHand].valid == true){
 			// Valid page to go down
 			if (bufDescTable[clockHand].refbit == false ){
+				
 
 				if (bufDescTable[clockHand].pinCnt == 0){
 					//
@@ -105,7 +111,7 @@ void BufMgr::allocBuf(FrameId & frame)
 					}
 				}
 				else{
-					// Adnace
+					// Advance
 					advanceClock();
 					count++;
 				}
@@ -128,6 +134,7 @@ void BufMgr::allocBuf(FrameId & frame)
 		// All Buffer frames are pinned throw BufferExceededException
 		throw BufferExceededException();
 	}	
+	
 }
 
 	
