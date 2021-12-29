@@ -77,12 +77,13 @@ void BufMgr::advanceClock()
 void BufMgr::allocBuf(FrameId & frame) 
 {
 
-	// perform first part of clock algorithm to search for open frame in Buffer Pool
+	// Perform first part of clock algorithm to search for open frame in Buffer Pool
+
 	int count = 0;
 	bool allocated = false;
 
 	// We have to find a empty spot in our Buffer Pool, we must traverse
-	while(count <(int)numBufs*2){
+	while(count < numBufs*2){
 
 		if(bufDescTable[clockHand].valid == true){
 			// Valid page to go down

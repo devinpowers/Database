@@ -39,11 +39,12 @@ class BufDesc {
   void Set(File* filePtr, PageId pageNum)
 	{ 
 		file = filePtr; // Set filePtr to File in DB!
-    pageNo = pageNum;
+    pageNo = pageNum; // Set: 
     pinCnt = 1;
     dirty = false;
-    valid = true;
-    refbit = true;
+    valid = true;    // Setting the Frame as VALID!
+    refbit = true;    // refbit
+
   }
 
   void Print()
