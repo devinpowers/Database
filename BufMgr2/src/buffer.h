@@ -4,6 +4,7 @@
 
 #include "file.h"
 #include "bufHashTbl.h"
+#include<iostream>
 
 namespace badgerdb {
 

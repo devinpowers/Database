@@ -92,10 +92,10 @@ void BufMgr::allocBuf(FrameId & frame)
 
 				if (bufDescTable[clockHand].pinCnt == 0){
 					//
-					if (bufDescTable[clockhand].dirty == false){
+					if (bufDescTable[clockHand].dirty == false){
 						//
 						allocated = true;
-						frame = clockhand;
+						frame = clockHand;
 						break;
 					}
 					else{
@@ -181,23 +181,58 @@ void BufMgr::readPage(File* file, const PageId pageNo, Page*& page)
 
 void BufMgr::unPinPage(File* file, const PageId pageNo, const bool dirty) 
 {
-	// UnPinPage
+  FrameId frameNo = 0;
+  hashTable->lookup(file, pageNo, frameNo);
 
+  if (dirty == true){
+    bufDescTable[frameNo].dirty = dirty;
+  } 
+
+  if (bufDescTable[frameNo].pinCnt == 0)
+  {
+  	throw PageNotPinnedException(file->filename(), pageNo, frameNo);
+  }
+  else  {
+    bufDescTable[frameNo].pinCnt--;
+  } 
 }
 
-void BufMgr::flushFile(const File* file) 
+void BufMgr::flushFile(const File* file)
 {
-	// Flush the Page
-	// iterate through the buftable and look for the pages belonging to the specfied file
-	for (FrameId i = 0; i < numBufs; i++){
-		
-		if (bufDescTable[i].file == file){
-			PageId pageNo = bufDescTable[i].pageNo;
-			// What about the exception and stuff
-		}
-
-	}
+    // iterate through the bufTable and look for the pages belonging
+    // to the specified file
+    for(FrameId i = 0; i < numBufs; ++i){
+        if (bufDescTable[i].file == file){
+            PageId pageNo = bufDescTable[i].pageNo;
+            // deal with the exception situation
+            if(bufDescTable[i].pinCnt != 0){
+                // throws PagePinnedException if some page of the file is pinned
+                throw PagePinnedException(file -> filename(), pageNo, i);
+            }
+            if(bufDescTable[i].valid == false){
+                // throws BadBufferException if an invalid page
+                // belonging to the file is encountered
+                throw BadBufferException(i, bufDescTable[i].dirty,
+                        bufDescTable[i].valid, bufDescTable[i].refbit);
+            }
+            // a) if the page is dirty
+            if (bufDescTable[i].dirty == true){
+                Page page = bufPool[i];
+                bufStats.accesses++;
+                // flush the page to the disk
+                bufDescTable[i].file -> writePage(page);
+                bufStats.diskwrites++;
+                // set the dirty bit for the page to false
+                bufDescTable[i].dirty = false;
+                // b) remove the page from the hashtable
+                hashTable -> remove(file, pageNo);
+                // c) invoke the Clear() method of BufDesc for the page frame
+                bufDescTable[i].Clear();
+            }
+        }
+    }
 }
+
 
 void BufMgr::allocPage(File* file, PageId &pageNo, Page*& page) 
 {
