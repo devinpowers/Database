@@ -18,6 +18,3 @@ all:
 clean:
 	cd src;\
 	rm -f badgerdb_main test.?
-
-doc:
-	doxygen Doxyfile
