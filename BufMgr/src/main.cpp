@@ -14,20 +14,17 @@
 #include "exceptions/buffer_exceeded_exception.h"
 
 
-/*
 #define PRINT_ERROR(str) \
 { \
 	std::cerr << "On Line No:" << __LINE__ << "\n"; \
 	std::cerr << str << "\n"; \
 	exit(1); \
 }
-*/
 
 
 using namespace badgerdb;
 
-/*
-const PageId num = 100;
+const PageId num = 1000;
 PageId pid[num], pageno1, pageno2, pageno3, i;
 RecordId rid[num], rid2, rid3;
 Page *page, *page2, *page3;
@@ -35,9 +32,7 @@ char tmpbuf[100];
 BufMgr* bufMgr;
 File *file1ptr, *file2ptr, *file3ptr, *file4ptr, *file5ptr;
 
-*/
 
-/*
 void test1();
 void test2();
 void test3();
@@ -45,34 +40,28 @@ void test4();
 void test5();
 void test6();
 
-*/
 
-// void testBufMgr();
+
+void testBufMgr();
 
 int main() 
 {
-	//Following code shows how to you File and Page classes
-
-	std::cout << "OK TESTING NOW !!!!!  " << std::endl;
-
-  std::cout << "------------------------------ " << std::endl;
   const std::string& filename = "test.db";
-  std::cout << "Creating a Database " << std::endl;
+
+  std::cout << "Creating a Database named test.db " << std::endl;
   // Clean up from any previous runs that crashed.
-  try
-	{
+  try {
     File::remove(filename);
   }
-	catch(FileNotFoundException){}
-
+  catch(FileNotFoundException){}
   {	
     // Create a new database file.
     File new_file = File::create(filename);
-	std::cout << "Created A new File " << std::endl;
+
 
     // Allocate some pages and put data on them.
     PageId third_page_number;
-	PageId fourth_page_number; // Testing here
+	PageId fourth_page_number; 
 	// Loop through and create new page()
     for (int i = 0; i < 5; ++i) {
       Page new_page = new_file.allocatePage();
@@ -119,8 +108,7 @@ int main()
 	std::cout << "Fourth page has a new record: "  << fourth_page.getRecord(rid2) << "\n\n";
 
   	}
-
-	std::cout << "Were out of scope now!!!!! " << std::endl;
+	
 
 
   // new_file goes out of scope here, so file is automatically closed.
@@ -129,15 +117,11 @@ int main()
    File::remove(filename);
 
 	//This function tests buffer manager, comment this line if you don't wish to test buffer manager
-	//testBufMgr();
-
-		std::cout << "Were out of the SCope of teh FRame ! " << std::endl;
-
-		std::cout << "ADDING TESTING THIS FOR THE SAKE OF PRACTICE!" << std::endl;   
+	testBufMgr();
 
 }
 
-/*
+
 void testBufMgr()
 {
 	// create buffer manager
@@ -177,6 +161,7 @@ void testBufMgr()
 	//Test buffer manager
 	//Comment tests which you do not wish to run now. Tests are dependent on their preceding tests. So, they have to be run in the following order. 
 	//Commenting  a particular test requires commenting all tests that follow it else those tests would fail.
+
 	test1();
 	test2();
 	test3();
@@ -185,6 +170,7 @@ void testBufMgr()
 	test6();
 
 	//Close files before deleting them
+	
 	file1.~File();
 	file2.~File();
 	file3.~File();
@@ -357,4 +343,3 @@ void test6()
 	bufMgr->flushFile(file1ptr);
 }
 
-*/
