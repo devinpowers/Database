@@ -187,7 +187,6 @@ void BufMgr::unPinPage(File* file, const PageId pageNo, const bool dirty)
   if (dirty == true){
     bufDescTable[frameNo].dirty = dirty;
   } 
-
   if (bufDescTable[frameNo].pinCnt == 0)
   {
   	throw PageNotPinnedException(file->filename(), pageNo, frameNo);
@@ -212,8 +211,7 @@ void BufMgr::flushFile(const File* file)
             if(bufDescTable[i].valid == false){
                 // throws BadBufferException if an invalid page
                 // belonging to the file is encountered
-                throw BadBufferException(i, bufDescTable[i].dirty,
-                        bufDescTable[i].valid, bufDescTable[i].refbit);
+                throw BadBufferException(i, bufDescTable[i].dirty, bufDescTable[i].valid, bufDescTable[i].refbit);
             }
             // a) if the page is dirty
             if (bufDescTable[i].dirty == true){
