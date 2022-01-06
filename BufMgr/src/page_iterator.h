@@ -13,23 +13,19 @@ namespace badgerdb {
 class PageIterator {
  public:
 
-  PageIterator()
-      : page_(NULL) {
+  PageIterator() : page_(NULL) {
     current_record_ = {Page::INVALID_NUMBER, Page::INVALID_SLOT};
   }
 
 
-  PageIterator(Page* page)
-      : page_(page)  {
+  PageIterator(Page* page) : page_(page)  {
     assert(page_ != NULL);
     const SlotId used_slot = getNextUsedSlot(Page::INVALID_SLOT /* start */);
     current_record_ = {page_->page_number(), used_slot};
   }
 
 
-  PageIterator(Page* page, const RecordId& record_id)
-      : page_(page),
-        current_record_(record_id) {
+  PageIterator(Page* page, const RecordId& record_id) : page_(page), current_record_(record_id) {
   }
 
  

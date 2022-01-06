@@ -178,15 +178,23 @@ void BufMgr::readPage(File* file, const PageId pageNo, Page*& page)
 
 }
 
+// UnPinPage
+/*
+	UnPinPage: 
 
+*/
 void BufMgr::unPinPage(File* file, const PageId pageNo, const bool dirty) 
 {
   FrameId frameNo = 0;
+
   hashTable->lookup(file, pageNo, frameNo);
+
+  // FrameNo Will update (Frame as in Frame in the Buffer) 
 
   if (dirty == true){
     bufDescTable[frameNo].dirty = dirty;
   } 
+  // Check pinCnt
   if (bufDescTable[frameNo].pinCnt == 0)
   {
   	throw PageNotPinnedException(file->filename(), pageNo, frameNo);
@@ -196,14 +204,17 @@ void BufMgr::unPinPage(File* file, const PageId pageNo, const bool dirty)
   } 
 }
 
+
 void BufMgr::flushFile(const File* file)
 {
     // iterate through the bufTable and look for the pages belonging
     // to the specified file
     for(FrameId i = 0; i < numBufs; ++i){
+
         if (bufDescTable[i].file == file){
             PageId pageNo = bufDescTable[i].pageNo;
             // deal with the exception situation
+
             if(bufDescTable[i].pinCnt != 0){
                 // throws PagePinnedException if some page of the file is pinned
                 throw PagePinnedException(file -> filename(), pageNo, i);
@@ -232,6 +243,7 @@ void BufMgr::flushFile(const File* file)
 }
 
 
+
 void BufMgr::allocPage(File* file, PageId &pageNo, Page*& page) 
 {
 	// Allocate an empty page in the specified specified file (Remeber Pages are inside files)
@@ -250,8 +262,6 @@ void BufMgr::allocPage(File* file, PageId &pageNo, Page*& page)
 	hashTable->insert(file, pageNo, frame);
 
 	bufDescTable[frame].Set(file, pageNo); // invoke set() to "set" the table up properly!
-
-
 }
 
 void BufMgr::disposePage(File* file, const PageId PageNo)

@@ -71,7 +71,7 @@ void BufHashTbl::lookup(const File* file, const PageId pageNo, FrameId &frameNo)
   while (tmpBuc) {
     if (tmpBuc->file == file && tmpBuc->pageNo == pageNo)
     {
-      frameNo = tmpBuc->frameNo; // return frameNo by reference
+      frameNo = tmpBuc->frameNo; // return frameNo by reference!!!!
       return;
     }
     tmpBuc = tmpBuc->next;

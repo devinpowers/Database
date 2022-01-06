@@ -141,9 +141,10 @@ void testBufMgr()
     File::remove(filename3);
     File::remove(filename4);
     File::remove(filename5);
-  }
+ 	 }
 	catch(FileNotFoundException e)
 	{
+
   }
 
 	File file1 = File::create(filename1);
@@ -169,7 +170,7 @@ void testBufMgr()
 	test5();
 	test6();
 
-	//Close files before deleting them
+	// Close files before deleting them
 	
 	file1.~File();
 	file2.~File();
@@ -183,6 +184,10 @@ void testBufMgr()
 	File::remove(filename3);
 	File::remove(filename4);
 	File::remove(filename5);
+
+	std::cout << "Print Buffer: " << std::endl;
+
+	bufMgr->printSelf();
 
 	delete bufMgr;
 

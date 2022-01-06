@@ -106,7 +106,7 @@ class BufMgr
 
       FrameId clockHand;
       std::uint32_t numBufs;
-      BufHashTbl *hashTable;    // Hash Table mapping (File, Page) to Frame Number
+      BufHashTbl *hashTable;    // Hash Table mapping (File, Page) to Frame Number (Return Frame)
       BufDesc *bufDescTable;    // Keep track of the state of each frame in the Buffer Pool
       BufStats bufStats;      // Statistics about the Buffer Pool usage
 
