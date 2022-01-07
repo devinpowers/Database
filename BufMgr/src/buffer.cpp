@@ -278,7 +278,7 @@ void BufMgr::disposePage(File* file, const PageId PageNo)
 	}
 
 	catch (HashNotFoundException e){
-		// IDK Nothign to return!!
+		
 	}
 
 	// Delete the Page from the File
@@ -293,7 +293,7 @@ void BufMgr::printSelf(void)
   BufDesc* tmpbuf;
 	int validFrames = 0;
   
-  for (std::uint32_t i = 0; i < numBufs; i++)
+  for (int i = 0; i < numBufs; i++)
 	{
   	tmpbuf = &(bufDescTable[i]);
 		std::cout << "FrameNo:" << i << " ";
@@ -304,6 +304,7 @@ void BufMgr::printSelf(void)
   }
 
 	std::cout << "Total Number of Valid Frames:" << validFrames << "\n";
+	std::cout << "THE END " << std::endl;
 }
 
 }

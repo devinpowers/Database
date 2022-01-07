@@ -21,6 +21,30 @@
 	exit(1); \
 }
 
+// FORK THING
+
+#include <sys/types.h>
+#include <unistd.h>
+#include <sys/wait.h>
+
+int fork_test(void (*test)())
+{
+	pid_t pid = fork();
+	if (pid == -1)
+		perror("Cannot run tests");
+	
+	if (pid) {
+		int wstatus;
+		waitpid(pid, &wstatus, 0);
+		return WEXITSTATUS(wstatus);
+	}
+	else {
+		// no return!
+		test();
+		exit(0);
+	}
+}
+
 
 using namespace badgerdb;
 
@@ -40,6 +64,13 @@ void test4();
 void test5();
 void test6();
 
+/*
+void extra_test1();
+void extra_test2();
+void extra_test3();
+void extra_test4();
+void extra_test5(); // Extra
+*/
 
 
 void testBufMgr();
@@ -107,11 +138,11 @@ int main()
    File::remove(filename);
 
 	// This function tests buffer manager, comment this line if you don't wish to test buffer manager
-	//testBufMgr();
+	testBufMgr();
 
 }
 
-/*
+
 void testBufMgr()
 {
 	// create buffer manager
@@ -153,14 +184,22 @@ void testBufMgr()
 	//Comment tests which you do not wish to run now. Tests are dependent on their preceding tests. So, they have to be run in the following order. 
 	//Commenting  a particular test requires commenting all tests that follow it else those tests would fail.
 
-	test1();
-	test2();
-//	test3();
-//	test4();
-//	test5();
-//	test6();
+	fork_test(test1);
+	fork_test(test2);
+	fork_test(test3);
+	fork_test(test4);
+	fork_test(test5);
+	fork_test(test6);
 
+	/*
+    fork_test(extra_test1);
+    fork_test(extra_test2);
+    fork_test(extra_test3);
+
+	fork_test(extra_test4); // Extra
 	// Close files before deleting them
+	*/
+
 	
 	file1.~File();
 	file2.~File();
@@ -176,17 +215,14 @@ void testBufMgr()
 	File::remove(filename4);
 	File::remove(filename5);
 	
+	std::cout << "Print Buffer: " << std::endl;
 
-
-	// std::cout << "Print Buffer: " << std::endl;
-
-	//bufMgr->printSelf();
+	bufMgr->printSelf();
 
 	delete bufMgr;
 
 	std::cout << "\n" << "Passed all tests." << "\n";
 }
-
 
 void test1()
 {
@@ -342,4 +378,3 @@ void test6()
 	bufMgr->flushFile(file1ptr);
 }
 
-*/
