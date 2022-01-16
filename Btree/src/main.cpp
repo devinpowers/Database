@@ -51,14 +51,15 @@ typedef struct tuple {
 	int i;
 	double d;
 	char s[64];
-} RECORD;
+} 
+RECORD;
 
 PageFile* file1;
 RecordId rid;
 RECORD record1;
 std::string dbRecord1;
 
-BufMgr * bufMgr = new BufMgr(100);
+BufMgr * bufMgr = new BufMgr(1000);
 
 // -----------------------------------------------------------------------------
 // Forward declarations
