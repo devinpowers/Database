@@ -1,13 +1,5 @@
 
 """
-FILE: TransformationJason.py
-------------------
-Author: Steven Kan (pkan2@wisc.edu)
-Author: Bobby Lv (zlv7@wisc.edu)
-Author: Shengwen Yang (syang382@wisc.edu)
-
-Modified: 02/19/2020
-
 Has useful imports and
 functions for parsing, including:
 
