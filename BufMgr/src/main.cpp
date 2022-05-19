@@ -61,18 +61,15 @@ int main()
 
     // Allocate some pages and put data on them.
     PageId third_page_number;
-	PageId fourth_page_number; 
+
 	// Loop through and create new page()
-    for (int i = 0; i < 5; ++i) {
+    for (int i = 0; i < 20; ++i) {
       Page new_page = new_file.allocatePage();
       if (i == 3) {
         // Keep track of the identifier for the third page so we can read it later!
         third_page_number = new_page.page_number();
       }
-	  if (i == 4){
-		  // Keep Track of the identifier for the fourth page so we can read it later!!
-		  fourth_page_number = new_page.page_number();			// Testing
-	  }
+	  
 	  // Insert "Record into each page"
       new_page.insertRecord("hello!");
       // Write the page back to the file (with the new data).
@@ -107,11 +104,11 @@ int main()
    File::remove(filename);
 
 	// This function tests buffer manager, comment this line if you don't wish to test buffer manager
-	//testBufMgr();
+	testBufMgr();
 
 }
 
-/*
+
 void testBufMgr()
 {
 	// create buffer manager
@@ -155,10 +152,10 @@ void testBufMgr()
 
 	test1();
 	test2();
-//	test3();
-//	test4();
-//	test5();
-//	test6();
+	test3();
+	test4();
+	test5();
+	test6();
 
 	// Close files before deleting them
 	
@@ -341,5 +338,3 @@ void test6()
 
 	bufMgr->flushFile(file1ptr);
 }
-
-*/
