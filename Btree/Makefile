@@ -18,7 +18,7 @@ export PATH
 all: $(LIB)/bufmgr.a $(OBJ)/filescan.o $(OBJ)/main.o $(OBJ)/btree.o
 	cd src;\
 	rm -r ../relA*;\
-	$(CC) $(CFLAGS) -I. obj/filescan.o obj/main.o obj/btree.o lib/bufmgr.a lib/exceptions.a -o badgerdb_main
+	$(CC) $(CFLAGS) -I. obj/filescan.o obj/main.o obj/btree.o lib/bufmgr.a lib/exceptions.a -o spartandb_main
 
 $(LIB)/bufmgr.a: $(LIB)/exceptions.a src/buffer.* src/file.* src/page.* src/bufHashTbl.*
 	cd $(OBJ)/;\
@@ -47,7 +47,7 @@ clean:
 	rm -rf $(OBJ)/*.o;\
 	rm -rf $(LIB)/*;\
 	rm -rf src/exceptions/*.o;\
-	rm -f src/badgerdb_main
+	rm -f src/spartandb_main
 
 doc:
 	doxygen Doxyfile

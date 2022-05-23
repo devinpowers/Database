@@ -79,6 +79,8 @@ void deleteRelation();
 
 int main(int argc, char **argv)
 {
+
+	std::cout << "Hello World my name is Devin and On the Banks of the Red Cedar!!... " << std::endl;
 	
   std::cout << "leaf size:" << INTARRAYLEAFSIZE << " non-leaf size:" << INTARRAYNONLEAFSIZE << std::endl;
 
