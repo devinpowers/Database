@@ -87,6 +87,8 @@ int main()
     // Retrieve the third page and add another record to it.
     Page third_page = new_file.readPage(third_page_number);
 
+
+
     const RecordId& rid = third_page.insertRecord("world!");
     new_file.writePage(third_page);
 
@@ -175,9 +177,9 @@ void testBufMgr()
 	
 
 
-	// std::cout << "Print Buffer: " << std::endl;
+	std::cout << "Print Buffer: " << std::endl;
 
-	//bufMgr->printSelf();
+	bufMgr->printSelf();
 
 	delete bufMgr;
 
