@@ -98,7 +98,7 @@ int main(int argc, char **argv)
 		PageFile new_file = PageFile::create(relationName);
 
 		// Allocate some pages and put data on them.
-		for (int i = 0; i < 20; ++i)
+		for (int i = 0; i < 200; ++i)
 		{
 			PageId new_page_number;
 			Page new_page = new_file.allocatePage(new_page_number);
