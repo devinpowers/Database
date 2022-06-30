@@ -81,7 +81,8 @@ int main(int argc, char **argv)
 {
 
 	std::cout << "Hello World my name is Devin and On the Banks of the Red Cedar!!... " << std::endl;
-	
+	std::cout << "Testing new things! " << std::endl;
+
   std::cout << "leaf size:" << INTARRAYLEAFSIZE << " non-leaf size:" << INTARRAYNONLEAFSIZE << std::endl;
 
   // Clean up from any previous runs that crashed.
@@ -98,7 +99,7 @@ int main(int argc, char **argv)
 		PageFile new_file = PageFile::create(relationName);
 
 		// Allocate some pages and put data on them.
-		for (int i = 0; i < 200; ++i)
+		for (int i = 0; i < 2500; ++i)
 		{
 			PageId new_page_number;
 			Page new_page = new_file.allocatePage(new_page_number);
